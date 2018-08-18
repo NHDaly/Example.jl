@@ -1,16 +1,11 @@
 version: 2
 jobs:
   build:
+    working_directory: /root/project/Example   # Clone into a directory whose name matches your Package.
     docker:
-      - image: julia:0.6                # image comes from Docker hub
+      - image: julia:0.7                # image comes from Docker hub
     steps:
       - checkout
       - run:
-          name: Greeting
-          command: echo Hello, world.
-      - run:
-          name: Print the Current Time
-          command: date
-      - run:
-          name: Julia runtests           # The julia tests script
-          command: julia test/runtests.jl
+          name: Install and Test this package
+          command: julia -e 'using Pkg; Pkg.update(); Pkg.clone(pwd()); Pkg.build("Example"); Pkg.test("Example");'
